@@ -31,7 +31,8 @@ url = ' https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDe
 html_data = requests.get(url).text
 soup = BeautifulSoup(html_data,'html.parser')
 tesla_revenue = pd.DataFrame(columns = ['Date','Revenue'])
-for row in soup.find('tbody').find_all('tr'):
+tables = beautiful_soup.find_all('table')
+for row in tables.find('tbody').find_all('tr'):
     col = row.find_all('td')
     date = col[0].text
     revenue = col[1].text.replace('$','').replace(',','')
@@ -51,8 +52,9 @@ url_2 = 'https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMD
 html_data_2 = requests.get(url_2)
 beautiful_soup = BeautifulSoup(html_data_2.text,'html.parser')
 gme_revenue = pd.DataFrame(columns = ['GameStop','Revenue'])
-for row in beautiful_soup.find('tbody').find_all('tr'):
-    col = row.find_all('tr')
+tables = beautiful_soup.find_all('table')
+for row in tables[1].find('tbody').find_all('tr'):
+    col = row.find_all('td')
     if len(col) >= 2:
         date = col[0].text
         revenue = col[1].text.replace('$','').replace(',','')
